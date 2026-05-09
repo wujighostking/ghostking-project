@@ -112,12 +112,6 @@ importers:
       npm-run-all2:
         specifier: ^8.0.4
         version: 8.0.4
-      oxfmt:
-        specifier: ^0.48.0
-        version: 0.48.0
-      oxlint:
-        specifier: ^1.63.0
-        version: 1.63.0
       typescript:
         specifier: ^6.0.3
         version: 6.0.3

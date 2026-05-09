@@ -33,7 +33,7 @@
     "commit-msg": "pnpx commitlint --edit"
   },
   "lint-staged": {
-    "*": [
+    ".{js,ts,jsx,tsx,vue}": [
       "pnpm lint:fix",
       "pnpm fmt"
     ]
