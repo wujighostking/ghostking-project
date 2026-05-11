@@ -1,7 +1,7 @@
-import { WebGLRenderer } from 'three'
-
 import { usePerspectiveCamera } from './usePerspectiveCamera'
+import { useRender } from './useRender'
 import { useScene } from './useScene'
+import { useWebGLRenderer } from './useWebGLRenderer'
 
 export function useViewer(container: HTMLElement) {
   const scene = useScene()
@@ -16,17 +16,9 @@ export function useViewer(container: HTMLElement) {
   })
   scene.add(camera)
 
-  const renderer = new WebGLRenderer({ antialias: true })
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  container.appendChild(renderer.domElement)
+  const renderer = useWebGLRenderer({ container, powerPreference: 'high-performance' })
 
-  function render() {
-    renderer.render(scene, camera)
+  const cancelAnimation = useRender(scene, camera, renderer)
 
-    requestAnimationFrame(render)
-  }
-
-  render()
-
-  return { scene, camera, renderer }
+  return { scene, camera, renderer, ...cancelAnimation }
 }
