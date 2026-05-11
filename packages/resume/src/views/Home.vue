@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { BoxGeometry, Mesh, MeshBasicMaterial } from 'three'
 import { onMounted, useTemplateRef } from 'vue'
-
-import { useViewer } from '@/hooks/useViewer'
+import { useViewer } from 'vue-three'
 
 const containerRef = useTemplateRef('container')
 

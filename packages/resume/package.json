@@ -14,7 +14,8 @@
   "dependencies": {
     "three": "^0.184.0",
     "vue": "^3.5.34",
-    "vue-router": "^5.0.6"
+    "vue-router": "^5.0.6",
+    "vue-three": "workspace:*"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",

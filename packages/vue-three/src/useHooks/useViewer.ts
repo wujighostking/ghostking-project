@@ -1,6 +1,6 @@
 import { PerspectiveCamera, WebGLRenderer } from 'three'
 
-import { useScene } from '@/hooks/useScene.ts'
+import { useScene } from './useScene'
 
 export function useViewer(container: HTMLElement) {
   const scene = useScene()
