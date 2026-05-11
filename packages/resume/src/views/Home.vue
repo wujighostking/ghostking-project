@@ -6,10 +6,12 @@ import { useViewer } from 'vue-three'
 const containerRef = useTemplateRef('container')
 
 onMounted(() => {
-  const container = containerRef.value!
+  const container = containerRef.value
+  if (!container) return
 
   const { scene } = useViewer({
     container,
+
     perspectiveCameraOptions: {
       fov: 75,
       aspect: container.clientWidth / container.clientHeight,
@@ -27,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="container"></div>
+  <div ref="container" class="w-[100vw] h-[100vh]"></div>
 </template>
 
 <style>

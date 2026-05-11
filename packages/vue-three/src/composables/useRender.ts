@@ -3,6 +3,7 @@ import { Camera, type Scene, type WebGLRenderer } from 'three'
 export type BeforeRenderCallback = (scene: Scene, camera: Camera, renderer: WebGLRenderer) => void
 export type AfterRenderCallback = (scene: Scene, camera: Camera, renderer: WebGLRenderer) => void
 
+let cancelAnimationId = -1
 export function useRender(
   scene: Scene,
   camera: Camera,
@@ -16,7 +17,7 @@ export function useRender(
 
   afterRenderCallback?.(scene, camera, renderer)
 
-  const cancelAnimationId = requestAnimationFrame(() =>
+  cancelAnimationId = requestAnimationFrame(() =>
     useRender(scene, camera, renderer, beforeRenderCallback, afterRenderCallback),
   )
 
