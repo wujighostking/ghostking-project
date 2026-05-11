@@ -1,11 +1,14 @@
 import { Camera, type Scene, type WebGLRenderer } from 'three'
 
+export type BeforeRenderCallback = (scene: Scene, camera: Camera, renderer: WebGLRenderer) => void
+export type AfterRenderCallback = (scene: Scene, camera: Camera, renderer: WebGLRenderer) => void
+
 export function useRender(
   scene: Scene,
   camera: Camera,
   renderer: WebGLRenderer,
-  beforeRenderCallback?: (scene: Scene, camera: Camera, renderer: WebGLRenderer) => void,
-  afterRenderCallback?: (scene: Scene, camera: Camera, renderer: WebGLRenderer) => void,
+  beforeRenderCallback?: BeforeRenderCallback,
+  afterRenderCallback?: AfterRenderCallback,
 ) {
   beforeRenderCallback?.(scene, camera, renderer)
 

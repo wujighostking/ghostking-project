@@ -1,8 +1,8 @@
 import { Scene } from 'three'
 
-type SceneOptions = Partial<typeof Scene.prototype>
+export type SceneOptions = Partial<typeof Scene.prototype>
 
-interface UseScene {
+export interface UseScene {
   (options?: SceneOptions, singleInstance?: boolean): Scene
   sceneInstance?: Scene
 }

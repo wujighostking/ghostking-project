@@ -1,24 +1,42 @@
-import { usePerspectiveCamera } from './usePerspectiveCamera'
-import { useRender } from './useRender'
-import { useScene } from './useScene'
-import { useWebGLRenderer } from './useWebGLRenderer'
+import { type PerspectiveCameraOptions, usePerspectiveCamera } from './usePerspectiveCamera'
+import { type AfterRenderCallback, type BeforeRenderCallback, useRender } from './useRender'
+import { type SceneOptions, useScene } from './useScene'
+import { useWebGLRenderer, type WebGLRendererOptions } from './useWebGLRenderer'
 
-export function useViewer(container: HTMLElement) {
-  const scene = useScene()
-  const camera = usePerspectiveCamera({
-    fov: 75,
-    aspect: window.innerWidth / window.innerHeight,
-    near: 0.1,
-    far: 1000,
+export interface ViewerOptions {
+  container?: HTMLElement
 
-    position: [0, 0, 50],
-    lookAt: [0, 0, 0],
-  })
+  sceneOptions?: {
+    options?: SceneOptions
+    singleInstance?: boolean
+  }
+  perspectiveCameraOptions?: PerspectiveCameraOptions
+  webGLRendererOptions?: WebGLRendererOptions
+  renderOptions?: {
+    beforeRenderCallback?: BeforeRenderCallback
+    afterRenderCallback?: AfterRenderCallback
+  }
+}
+
+export function useViewer(options: ViewerOptions) {
+  const { container, sceneOptions, perspectiveCameraOptions, webGLRendererOptions, renderOptions } =
+    options
+
+  const scene = useScene(sceneOptions?.options, sceneOptions?.singleInstance)
+  const camera = usePerspectiveCamera(perspectiveCameraOptions)
   scene.add(camera)
 
-  const renderer = useWebGLRenderer({ container, powerPreference: 'high-performance' })
+  const renderer = useWebGLRenderer(
+    { container, ...webGLRendererOptions } /*{ container, powerPreference: 'high-performance' }*/,
+  )
 
-  const cancelAnimation = useRender(scene, camera, renderer)
+  const cancelAnimation = useRender(
+    scene,
+    camera,
+    renderer,
+    renderOptions?.beforeRenderCallback,
+    renderOptions?.afterRenderCallback,
+  )
 
   return { scene, camera, renderer, ...cancelAnimation }
 }

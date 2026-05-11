@@ -12,7 +12,7 @@ export interface PerspectiveCameraOptions extends Partial<
   lookAt?: [number, number, number] | Vector3
 }
 
-export function usePerspectiveCamera(options: PerspectiveCameraOptions) {
+export function usePerspectiveCamera(options?: PerspectiveCameraOptions) {
   const {
     fov = 75,
     aspect = window.innerWidth / window.innerHeight,
@@ -23,7 +23,7 @@ export function usePerspectiveCamera(options: PerspectiveCameraOptions) {
     lookAt,
 
     ...rest
-  } = options
+  } = options ?? {}
 
   const camera = new PerspectiveCamera(fov, aspect, near, far)
 
