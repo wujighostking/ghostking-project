@@ -1,13 +1,19 @@
-import { PerspectiveCamera, WebGLRenderer } from 'three'
+import { WebGLRenderer } from 'three'
 
+import { usePerspectiveCamera } from './usePerspectiveCamera'
 import { useScene } from './useScene'
 
 export function useViewer(container: HTMLElement) {
   const scene = useScene()
-  const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+  const camera = usePerspectiveCamera({
+    fov: 75,
+    aspect: window.innerWidth / window.innerHeight,
+    near: 0.1,
+    far: 1000,
 
-  camera.position.set(0, 0, 50)
-  camera.lookAt(0, 0, 0)
+    position: [0, 0, 50],
+    lookAt: [0, 0, 0],
+  })
   scene.add(camera)
 
   const renderer = new WebGLRenderer({ antialias: true })
