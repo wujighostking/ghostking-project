@@ -22,7 +22,12 @@ export function destroy(scene: Scene) {
 
     materials.forEach((material) => {
       Object.values(material).forEach((value: any) => {
-        if (value && typeof value === 'object' && 'dispose' in value) {
+        if (
+          value &&
+          typeof value === 'object' &&
+          'dispose' in value &&
+          typeof value.dispose === 'function'
+        ) {
           value.dispose?.()
         }
       })
