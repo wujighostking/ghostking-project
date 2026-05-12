@@ -29,9 +29,7 @@ export function useViewer(options: ViewerOptions) {
   const camera = usePerspectiveCamera(perspectiveCameraOptions)
   scene.add(camera)
 
-  const renderer = useWebGLRenderer(
-    { container, ...webGLRendererOptions } /*{ container, powerPreference: 'high-performance' }*/,
-  )
+  const renderer = useWebGLRenderer({ container, ...webGLRendererOptions })
 
   const cancelAnimation = useRender(
     scene,
@@ -41,11 +39,25 @@ export function useViewer(options: ViewerOptions) {
     renderOptions?.afterRenderCallback,
   )
 
+  function resize() {
+    renderer.setSize(
+      container?.clientWidth || window.innerWidth,
+      container?.clientHeight || window.innerHeight,
+    )
+    camera.aspect =
+      (container?.clientWidth || window.innerWidth) /
+      (container?.clientHeight || window.innerHeight)
+    camera.updateProjectionMatrix()
+  }
+
+  window.addEventListener('resize', resize)
+
   return {
     scene,
     camera,
     renderer,
     destroy: (s: Scene) => _destroy(s ?? scene),
+    removeResize: () => window.removeEventListener('resize', resize),
     ...cancelAnimation,
   }
 }

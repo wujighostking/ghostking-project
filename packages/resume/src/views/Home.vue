@@ -7,11 +7,12 @@ const containerRef = useTemplateRef('container')
 
 let _destroy: (scene: Scene) => void
 let _scene: Scene
+let _removeResize: () => void
 onMounted(() => {
   const container = containerRef.value
   if (!container) return
 
-  const { scene, destroy } = useViewer({
+  const { scene, destroy, removeResize } = useViewer({
     container,
 
     perspectiveCameraOptions: {
@@ -26,6 +27,7 @@ onMounted(() => {
   })
   _destroy = destroy
   _scene = scene
+  _removeResize = removeResize
 
   const mesh = new Mesh(new BoxGeometry(10, 10, 10), new MeshBasicMaterial({ color: '#fff' }))
   mesh.position.set(0, 0, 0)
@@ -34,6 +36,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   _destroy?.(_scene)
+  _removeResize?.()
 })
 </script>
 

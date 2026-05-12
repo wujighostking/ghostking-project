@@ -24,7 +24,5 @@ export function useWebGLRenderer(options?: WebGLRendererOptions) {
     container.appendChild(renderer.domElement)
   }
 
-  window.addEventListener('resize', () => {})
-
   return renderer
 }
