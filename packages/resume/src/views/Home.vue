@@ -9,11 +9,11 @@ import {
 } from 'three'
 import type { OrbitControls } from 'three/addons'
 import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue'
-import { useViewer, useOrbitControls } from 'vue-three'
+import { useViewer, useOrbitControls, type destroy } from 'vue-three'
 
 const containerRef = useTemplateRef('container')
 
-let _destroy: (scene: Scene) => void
+let _destroy: typeof destroy
 let _removeResize: () => void
 let _scene: Scene
 let _camera: PerspectiveCamera
