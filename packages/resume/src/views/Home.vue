@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { BoxGeometry, Mesh, MeshBasicMaterial } from 'three'
-import { onMounted, useTemplateRef } from 'vue'
+import { BoxGeometry, Mesh, MeshBasicMaterial, Scene } from 'three'
+import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue'
 import { useViewer } from 'vue-three'
 
 const containerRef = useTemplateRef('container')
 
+let _destroy: (scene: Scene) => void
+let _scene: Scene
 onMounted(() => {
   const container = containerRef.value
   if (!container) return
 
-  const { scene } = useViewer({
+  const { scene, destroy } = useViewer({
     container,
 
     perspectiveCameraOptions: {
@@ -22,13 +24,21 @@ onMounted(() => {
       lookAt: [0, 0, 0],
     },
   })
+  _destroy = destroy
+  _scene = scene
+
   const mesh = new Mesh(new BoxGeometry(10, 10, 10), new MeshBasicMaterial({ color: '#fff' }))
   mesh.position.set(0, 0, 0)
   scene.add(mesh)
 })
+
+onBeforeUnmount(() => {
+  _destroy?.(_scene)
+})
 </script>
 
 <template>
+  <button @click="() => _destroy?.(_scene)">destroy</button>
   <div ref="container" class="w-[100vw] h-[100vh]"></div>
 </template>
 

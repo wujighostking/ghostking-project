@@ -1,3 +1,6 @@
+import type { Scene } from 'three'
+
+import { destroy as _destroy } from './destroy'
 import { type PerspectiveCameraOptions, usePerspectiveCamera } from './usePerspectiveCamera'
 import { type AfterRenderCallback, type BeforeRenderCallback, useRender } from './useRender'
 import { type SceneOptions, useScene } from './useScene'
@@ -38,5 +41,11 @@ export function useViewer(options: ViewerOptions) {
     renderOptions?.afterRenderCallback,
   )
 
-  return { scene, camera, renderer, ...cancelAnimation }
+  return {
+    scene,
+    camera,
+    renderer,
+    destroy: (s: Scene) => _destroy(s ?? scene),
+    ...cancelAnimation,
+  }
 }

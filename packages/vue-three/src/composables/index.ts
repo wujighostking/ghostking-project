@@ -1,3 +1,6 @@
 export * from './useScene'
 export * from './useViewer'
 export * from './usePerspectiveCamera'
+export * from './useWebGLRenderer'
+export * from './useRender'
+export * from './destroy'
