@@ -13,7 +13,13 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "dev": "turbo run dev",
+    "dev:nest": "turbo run dev --filter=nest",
+    "dev:resume": "turbo run dev --filter=resume",
+    "dev:vue-three": "turbo run dev --filter=vue-three",
     "build": "turbo run build",
+    "build:nest": "turbo run build --filter=nest",
+    "build:resume": "turbo run build --filter=resume",
+    "build:vue-three": "turbo run build --filter=vue-three",
     "prepare": "simple-git-hooks",
     "preinstall": "npx only-allow pnpm"
   },
