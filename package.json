@@ -13,6 +13,7 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "dev": "turbo run dev",
+    "dev:ai-app": "turbo run dev --filter=ai-app",
     "dev:nest": "turbo run dev --filter=nest",
     "dev:resume": "turbo run dev --filter=resume",
     "dev:vue-three": "turbo run dev --filter=vue-three",
@@ -20,19 +21,20 @@
     "build:nest": "turbo run build --filter=nest",
     "build:resume": "turbo run build --filter=resume",
     "build:vue-three": "turbo run build --filter=vue-three",
+    "build:ai-app": "turbo run build --filter=ai-app",
     "prepare": "simple-git-hooks",
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.0.0",
-    "@commitlint/config-conventional": "^21.0.0",
-    "@types/node": "^25.6.2",
-    "lint-staged": "^17.0.3",
-    "oxfmt": "^0.48.0",
-    "oxlint": "^1.63.0",
-    "simple-git-hooks": "^2.13.1",
-    "turbo": "^2.9.12",
-    "typescript": "^6.0.3"
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@types/node": "catalog:",
+    "lint-staged": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "simple-git-hooks": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpx lint-staged",

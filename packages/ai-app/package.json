@@ -1,5 +1,5 @@
 {
-  "name": "resume",
+  "name": "ai-app",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -8,19 +8,15 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build",
-    "format": "oxfmt src/"
+    "type-check": "vue-tsc --build"
   },
   "dependencies": {
-    "three": "catalog:",
     "vue": "catalog:",
-    "vue-router": "^5.0.6",
-    "vue-three": "workspace:*"
+    "vue-router": "catalog:"
   },
   "devDependencies": {
     "@tsconfig/node24": "catalog:",
     "@types/node": "catalog:",
-    "@types/three": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@vue/tsconfig": "catalog:",
