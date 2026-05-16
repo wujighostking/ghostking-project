@@ -26,15 +26,23 @@ async function handleClick() {
 const inputStreamRef = useTemplateRef<HTMLInputElement>('inputStream')
 const streamMessages = shallowRef<ChatMessage[]>([])
 const isStreaming = shallowRef(false)
-let streamSource: EventSource | undefined
+let streamController: AbortController | undefined
 
-function closeStream() {
-  streamSource?.close()
-  streamSource = undefined
-  isStreaming.value = false
+function closeStream(controller = streamController) {
+  if (!controller) {
+    isStreaming.value = false
+    return
+  }
+
+  controller.abort()
+
+  if (streamController === controller) {
+    streamController = undefined
+    isStreaming.value = false
+  }
 }
 
-function handleStreamClick() {
+async function handleStreamClick() {
   const content = inputStreamRef.value?.value.trim()
   if (!content || content?.length === 0) return
 
@@ -43,26 +51,48 @@ function handleStreamClick() {
   const requestMessages = [...streamMessages.value, { role: 'user', content } satisfies ChatMessage]
   streamMessages.value = [...requestMessages, { role: 'assistant', content: '' }]
 
-  const params = new URLSearchParams({
-    messages: JSON.stringify(requestMessages),
-  })
-
-  streamSource = new EventSource(`http://localhost:3000/stream?${params.toString()}`)
+  const controller = new AbortController()
+  streamController = controller
   isStreaming.value = true
 
-  streamSource.onmessage = (event) => {
-    const assistantMessage = streamMessages.value.at(-1)
+  try {
+    await fetchEventSource('http://localhost:3000/stream', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: requestMessages,
+      }),
+      signal: controller.signal,
+      openWhenHidden: true,
+      onmessage(event) {
+        if (event.event === 'done') {
+          closeStream(controller)
+          return
+        }
 
-    if (!assistantMessage || assistantMessage.role !== 'assistant') return
+        const assistantMessage = streamMessages.value.at(-1)
 
-    streamMessages.value = [
-      ...streamMessages.value.slice(0, -1),
-      { ...assistantMessage, content: `${assistantMessage.content}${event.data}` },
-    ]
+        if (!assistantMessage || assistantMessage.role !== 'assistant') return
+
+        streamMessages.value = [
+          ...streamMessages.value.slice(0, -1),
+          { ...assistantMessage, content: `${assistantMessage.content}${event.data}` },
+        ]
+      },
+      onclose() {
+        closeStream(controller)
+      },
+      onerror(error) {
+        throw error
+      },
+    })
+  } catch {
+    // fetchEventSource rejects when onerror stops retrying; state is reset below.
+  } finally {
+    closeStream(controller)
   }
-
-  streamSource.addEventListener('done', closeStream)
-  streamSource.onerror = closeStream
 }
 
 onUnmounted(closeStream)

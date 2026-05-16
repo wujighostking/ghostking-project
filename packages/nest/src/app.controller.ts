@@ -1,23 +1,19 @@
-import { Body, Controller, Get, Post, Query, Sse } from '@nestjs/common'
+import { Body, Controller, Post, Res } from '@nestjs/common'
+import type { Response } from 'express'
 
-import { AppService } from './app.service'
+import { AppService, type StreamBody } from './app.service'
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  async getHello() {
-    return await this.appService.getHello()
-  }
 
   @Post('/ask')
   async ask(@Body() body: any) {
     return await this.appService.ask(body)
   }
 
-  @Sse('/stream')
-  stream(@Query('messages') messages = '[]') {
-    return this.appService.getResponseStream(JSON.parse(messages))
+  @Post('/stream')
+  async streamPost(@Body() body: StreamBody | undefined, @Res() response: Response) {
+    await this.appService.writeResponseStreamWithoutRxjs(response, body?.messages ?? [])
   }
 }
