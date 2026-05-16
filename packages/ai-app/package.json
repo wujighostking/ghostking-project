@@ -11,6 +11,8 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
+    "axios": "catalog:",
+    "openai": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },
