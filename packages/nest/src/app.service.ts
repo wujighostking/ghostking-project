@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, type MessageEvent } from '@nestjs/common'
 import OpenAI from 'openai'
+import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
+import { Observable } from 'rxjs'
 
-type MessageArray = Array<Record<string, string>>
+type MessageArray = ChatCompletionMessageParam[]
 
 @Injectable()
 export class AppService {
@@ -34,7 +36,7 @@ export class AppService {
     return this.messages
   }
 
-  async ask(data: Record<string, string>) {
+  async ask(data: { messages: MessageArray }) {
     const { messages } = data
 
     const response = await this.getResponse(messages)
@@ -42,12 +44,50 @@ export class AppService {
     return response
   }
 
-  private async getResponse(messages) {
+  private async getResponse(messages: MessageArray) {
     const completion = await this.openai.chat.completions.create({
       model: 'qwen-plus',
       messages: messages,
     })
 
     return completion.choices[0].message
+  }
+
+  getResponseStream(messages: MessageArray) {
+    return new Observable<MessageEvent>((subscriber) => {
+      const controller = new AbortController()
+
+      void (async () => {
+        try {
+          const stream = await this.openai.chat.completions.create(
+            {
+              model: 'qwen-plus',
+              messages: messages,
+              stream: true,
+            },
+            { signal: controller.signal },
+          )
+
+          for await (const chunk of stream) {
+            const content = chunk.choices[0]?.delta?.content
+
+            if (content) {
+              subscriber.next({ data: content })
+            }
+          }
+
+          subscriber.next({ data: '[DONE]', type: 'done' })
+          subscriber.complete()
+        } catch (error) {
+          if (!controller.signal.aborted) {
+            subscriber.error(error)
+          }
+        }
+      })()
+
+      return () => {
+        controller.abort()
+      }
+    })
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, Sse } from '@nestjs/common'
 
 import { AppService } from './app.service'
 
@@ -14,5 +14,10 @@ export class AppController {
   @Post('/ask')
   async ask(@Body() body: any) {
     return await this.appService.ask(body)
+  }
+
+  @Sse('/stream')
+  stream(@Query('messages') messages = '[]') {
+    return this.appService.getResponseStream(JSON.parse(messages))
   }
 }
