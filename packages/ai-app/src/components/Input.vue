@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, useTemplateRef } from 'vue'
 
-import { messages } from '@/composables/ai.ts'
+import { getStreamResponse, messages } from '@/composables/ai.ts'
 
 const inputFieldContainer = useTemplateRef<HTMLDivElement>('inputFieldContainer')
 const inputField = useTemplateRef<HTMLTextAreaElement>('inputField')
@@ -20,10 +20,11 @@ function sendMessages() {
   const content = inputField.value?.value.trim()
   if (!content) return
 
-  messages.value = [
-    ...messages.value,
-    { id: messages.value.length + '', role: 'user', content: content },
-  ]
+  // messages.value = [
+  //   ...messages.value,
+  //   { id: messages.value.length + '', role: 'user', content: content },
+  // ]
+  getStreamResponse(content)
 
   if (inputField.value?.value) inputField.value.value = ''
   void nextTick(syncInputHeight)
