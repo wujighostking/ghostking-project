@@ -97,6 +97,7 @@
 //
 // onUnmounted(closeStream)
 
+import Content from '@/components/Content.vue'
 import Header from '@/components/Header.vue'
 import History from '@/components/History.vue'
 </script>
@@ -124,8 +125,9 @@ import History from '@/components/History.vue'
 
   <div>
     <Header></Header>
-    <div class="h-[calc(100vh-66px)]">
+    <div class="flex h-[calc(100vh-40px)] w-100%">
       <History></History>
+      <Content></Content>
     </div>
   </div>
 </template>
