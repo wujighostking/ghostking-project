@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { nextTick, onMounted, useTemplateRef } from 'vue'
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue'
 
 import { getStreamResponse } from '@/composables/ai.ts'
 
 const inputFieldContainer = useTemplateRef<HTMLDivElement>('inputFieldContainer')
 const inputField = useTemplateRef<HTMLTextAreaElement>('inputField')
+
+const isResponsing = ref(false)
 
 function syncInputHeight() {
   const field = inputField.value
@@ -20,11 +22,10 @@ function sendMessages() {
   const content = inputField.value?.value.trim()
   if (!content) return
 
-  // messages.value = [
-  //   ...messages.value,
-  //   { id: messages.value.length + '', role: 'user', content: content },
-  // ]
-  getStreamResponse(content)
+  isResponsing.value = true
+  getStreamResponse(content).finally(() => {
+    isResponsing.value = false
+  })
 
   if (inputField.value?.value) inputField.value.value = ''
   void nextTick(syncInputHeight)
@@ -50,6 +51,7 @@ onMounted(() => {
       placeholder="发送消息..."
       @input="syncInputHeight"
       @keydown.enter="handleEnter"
+      :disabled="isResponsing"
     />
   </div>
 </template>

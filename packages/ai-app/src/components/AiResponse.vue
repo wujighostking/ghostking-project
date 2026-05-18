@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { Markdown } from 'vue-stream-markdown'
-
-import 'vue-stream-markdown/index.css'
-import 'vue-stream-markdown/theme.css'
+import VueMarkdown from 'vue-markdown-render'
 
 const props = defineProps({
   content: {
@@ -13,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <Markdown :content="props.content"></Markdown>
+  <VueMarkdown :source="props.content" :options="{ breaks: true }"></VueMarkdown>
 </template>
 
 <style scoped></style>

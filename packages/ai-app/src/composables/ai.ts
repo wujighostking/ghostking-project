@@ -57,7 +57,8 @@ export async function getStreamResponse(content: string) {
             return
           }
 
-          assistantMessages += event.data.slice(1, -1)
+          const chunk = JSON.parse(event.data) as string
+          assistantMessages += chunk
 
           if (isStart) {
             isStart = false
