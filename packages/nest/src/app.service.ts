@@ -11,9 +11,8 @@ export type StreamBody = {
 @Injectable()
 export class AppService {
   private openai = new OpenAI({
-    // 若没有配置环境变量，请用百炼API Key将下行替换为：apiKey: "sk-xxx",
-    apiKey: 'sk-cecf74aa1dae4aa0be4c0a424f8d3259',
-    baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+    apiKey: process.env.API_KEY,
+    baseURL: process.env.BASE_URL,
   })
 
   async ask(data: { messages: MessageArray }) {
@@ -26,7 +25,9 @@ export class AppService {
 
   private async getResponse(messages: MessageArray) {
     const completion = await this.openai.chat.completions.create({
-      model: 'qwen-plus',
+      // model: 'qwen-plus',
+      // model: 'qwen3.6-plus',
+      model: 'deepseek-v4-pro',
       messages: messages,
     })
 

@@ -20,11 +20,12 @@ function syncInputHeight() {
 
 function sendMessages() {
   const content = inputField.value?.value.trim()
-  if (!content) return
+  if (!content || isResponsing.value) return
 
   isResponsing.value = true
   getStreamResponse(content).finally(() => {
     isResponsing.value = false
+    inputField.value?.focus()
   })
 
   if (inputField.value?.value) inputField.value.value = ''
@@ -39,6 +40,7 @@ function handleEnter(event: KeyboardEvent) {
 }
 
 onMounted(() => {
+  inputField.value?.focus()
   nextTick(syncInputHeight)
 })
 </script>
@@ -51,7 +53,6 @@ onMounted(() => {
       placeholder="发送消息..."
       @input="syncInputHeight"
       @keydown.enter="handleEnter"
-      :disabled="isResponsing"
     />
   </div>
 </template>

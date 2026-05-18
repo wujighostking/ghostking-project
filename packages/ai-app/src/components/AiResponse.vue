@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <VueMarkdown :source="props.content" :options="{ breaks: true }"></VueMarkdown>
+  <VueMarkdown :source="props.content"></VueMarkdown>
 </template>
 
 <style scoped></style>
