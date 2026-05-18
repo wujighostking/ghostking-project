@@ -8,11 +8,6 @@ export const messages = shallowRef<Message[]>([
   // { id: '3', role: 'user', content: '这部电影的导演是谁？' },
 ])
 
-type ChatMessage = {
-  role: 'system' | 'user' | 'assistant'
-  content: string
-}
-
 const isStreaming = shallowRef(false)
 
 export async function getStreamResponse(content: string) {
@@ -62,7 +57,7 @@ export async function getStreamResponse(content: string) {
             return
           }
 
-          assistantMessages += event.data
+          assistantMessages += event.data.slice(1, -1)
 
           if (isStart) {
             isStart = false

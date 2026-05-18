@@ -16,7 +16,8 @@
     "axios": "catalog:",
     "openai": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "vue-stream-markdown": "1.0.0-beta.2"
   },
   "devDependencies": {
     "@tsconfig/node24": "catalog:",

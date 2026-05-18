@@ -8,7 +8,10 @@ import { messages } from '@/composables/ai.ts'
   <div class="chat-context w-100%">
     <template v-for="message in messages" :key="message.id">
       <user-message v-if="message.role === 'user'" :content="message.content"></user-message>
-      <ai-response v-if="message.role === 'assistant'" :content="message.content"></ai-response>
+      <ai-response
+        v-else-if="message.role === 'assistant'"
+        :content="message.content"
+      ></ai-response>
     </template>
   </div>
 </template>

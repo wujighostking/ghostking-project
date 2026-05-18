@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, useTemplateRef } from 'vue'
 
-import { getStreamResponse, messages } from '@/composables/ai.ts'
+import { getStreamResponse } from '@/composables/ai.ts'
 
 const inputFieldContainer = useTemplateRef<HTMLDivElement>('inputFieldContainer')
 const inputField = useTemplateRef<HTMLTextAreaElement>('inputField')
